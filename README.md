@@ -1,1 +1,1 @@
-Aplikacja biznesowa (w trkacie realziacji).
+Aplikacja biznesowa (w trkacie realizacji).
