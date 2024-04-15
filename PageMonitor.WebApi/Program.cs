@@ -1,3 +1,4 @@
+using PageMonitor.Infrastructure.Persistence;
 using Serilog;
 
 namespace PageMonitor.WebApi
@@ -27,6 +28,7 @@ namespace PageMonitor.WebApi
 
             // Add services to the container.
 
+            builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
 
             var app = builder.Build();
