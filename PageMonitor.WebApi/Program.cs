@@ -2,6 +2,7 @@ using PageMonitor.Aplication.Logic.Abstractions;
 using PageMonitor.Infrastructure.Persistence;
 using PageMonitor.WebApi.Middlewares;
 using Serilog;
+using PageMonitor.Aplication;
 
 namespace PageMonitor.WebApi
 {
@@ -42,6 +43,7 @@ namespace PageMonitor.WebApi
                 c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
             });
 
+            builder.Services.AddAplicationServices();
             var app = builder.Build();
 
             app.UseExceptionResultMiddleware();
