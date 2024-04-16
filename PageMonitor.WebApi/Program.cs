@@ -1,4 +1,6 @@
+using PageMonitor.Aplication.Logic.Abstractions;
 using PageMonitor.Infrastructure.Persistence;
+using PageMonitor.WebApi.Middlewares;
 using Serilog;
 
 namespace PageMonitor.WebApi
@@ -17,6 +19,11 @@ namespace PageMonitor.WebApi
                 .WriteTo.Console()
                 .CreateBootstrapLogger();
 
+            if(builder.Environment.IsDevelopment())
+            {
+                builder.Configuration.AddJsonFile($"appsettings.Development.local.json");
+            }
+
             builder.Host.UseSerilog((context, services, configuration) => configuration
                 .Enrich.WithProperty("Aplication", APP_NAME)
                 .Enrich.WithProperty("MachineName", Environment.MachineName)
@@ -30,9 +37,14 @@ namespace PageMonitor.WebApi
 
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
+            builder.Services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
+            });
 
             var app = builder.Build();
 
+            app.UseExceptionResultMiddleware();
             // Configure the HTTP request pipeline.
 
             app.UseAuthorization();
