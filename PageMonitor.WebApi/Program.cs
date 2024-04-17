@@ -3,6 +3,7 @@ using PageMonitor.Infrastructure.Persistence;
 using PageMonitor.WebApi.Middlewares;
 using Serilog;
 using PageMonitor.Aplication;
+using EasyCaching.Core;
 
 namespace PageMonitor.WebApi
 {
@@ -38,6 +39,7 @@ namespace PageMonitor.WebApi
             builder.Services.AddDatabaseCache();
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
+            builder.Services.AddJwtAuth(builder.Configuration);
             builder.Services.AddMediatR(c =>
             {
                 c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));

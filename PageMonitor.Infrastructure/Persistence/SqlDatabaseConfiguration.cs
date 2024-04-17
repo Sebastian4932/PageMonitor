@@ -1,7 +1,9 @@
 ﻿using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PageMonitor.Aplication.Interfaces;
+using PageMonitor.Infrastructure.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
