@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCoreSecondLevelCacheInterceptor;
+using Microsoft.EntityFrameworkCore;
 using PageMonitor.Aplication.Exceptions;
 using PageMonitor.Aplication.Interfaces;
 using PageMonitor.Domain.Enities;
@@ -28,10 +29,12 @@ namespace PageMonitor.Aplication.Services
             if( userId == null )
             {
                 return await _applicationDbContext.AccountUsers
-                    .Where( au => au.UserId == userId.Value)
-                    .OrderBy( au => au.Id)
-                    .Select( au => (int?)au.AccountId)
+                    .Where(au => au.UserId == userId.Value)
+                    .OrderBy(au => au.Id)
+                    .Select(au => (int?)au.AccountId)
+                    .Cacheable()
                     .FirstOrDefaultAsync();
+                    
             }
             return null;
         }
@@ -44,7 +47,7 @@ namespace PageMonitor.Aplication.Services
                 throw new ArgumentNullException();
             }
 
-            var account = await _applicationDbContext.Accounts.FirstOrDefaultAsync(a => a.Id == accountId.Value);
+            var account = await _applicationDbContext.Accounts.Cacheable().FirstOrDefaultAsync(a => a.Id == accountId.Value);
             if( account == null )
             {
                 throw new ErrorException("AccountDoesNoExist");
